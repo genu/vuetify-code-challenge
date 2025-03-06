@@ -24,7 +24,16 @@ export default [
    */
   {
     rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
       "prettier/prettier": ["error"],
+      "vue/multi-word-component-names": "off",
     },
   },
   eslintConfigPrettier,
