@@ -8,8 +8,8 @@
   const { create: createOverlay } = useOverlay()
   const { confirm } = useDialog()
 
-  const { data: posts, refetch } = all("posts")
-  const { data: authors } = all("authors")
+  const { data: posts, refetch: refetchPosts } = all("posts")
+  const { data: authors, refetch: refetchAuthors } = all("authors")
 
   const editPostDialog = createOverlay(EditPostDialog)
 
@@ -32,14 +32,17 @@
   const onCreate = async () => {
     const createdPost = await editPostDialog.open()
 
-    if (createdPost) await refetch()
+    if (createdPost) {
+      await refetchPosts()
+      await refetchAuthors() // Refetch authors since user might have added a new author
+    }
   }
 
   const onDelete = async (id: number) => {
     confirm({ title: "Are you sure you want to delete this post?", size: "md", color: "error" })
       .onConfirm(async () => {
         await remove("posts", id)
-        await refetch()
+        await refetchPosts()
       })
       .open()
   }
@@ -47,7 +50,10 @@
   const onEdit = async (id: number) => {
     const editedPost = await editPostDialog.open({ id })
 
-    if (editedPost) await refetch()
+    if (editedPost) {
+      await refetchPosts()
+      await refetchAuthors() // Refetch authors since user might have added a new author
+    }
   }
 </script>
 
