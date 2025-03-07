@@ -17,6 +17,7 @@
 
   const onSave = async (data: EditAuthorForm) => {
     await create("authors", { ...data })
+    emits("close", true)
   }
 </script>
 
