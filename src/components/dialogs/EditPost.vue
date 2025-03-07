@@ -8,7 +8,7 @@
 
   const { id } = defineProps<{ id?: number }>()
   const emits = defineEmits<{ close: [boolean?] }>()
-  const { all, create, one } = useData()
+  const { all, create, one, update } = useData()
   const { create: createOverlay } = useOverlay()
 
   const editAuthorDialog = createOverlay(EditAuthorDialog)
@@ -65,7 +65,11 @@
   }
 
   const onSave = async (data: EditPostForm) => {
-    await create("posts", { ...data })
+    if (isNew.value) {
+      await create("posts", { ...data })
+    } else {
+      await update("posts", { ...data, id })
+    }
 
     emits("close", true)
   }
