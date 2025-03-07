@@ -16,7 +16,7 @@ export interface Schema extends DBSchema {
       title?: string
       content?: string
       authorId?: number
-      date?: Date
+      postedAt?: Date
     }
   }
 }
