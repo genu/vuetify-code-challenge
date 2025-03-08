@@ -1,12 +1,13 @@
 <script lang="ts" setup>
   import { useData } from "@/composables"
-  import { useDialog, useOverlay } from "@/composables/ui"
+  import { useDialog, useOverlay, useSnackbar } from "@/composables/ui"
   import EditPostDialog from "@/components/dialogs/EditPost.vue"
   import { computed } from "vue"
 
   const { all, remove } = useData()
   const { create: createOverlay } = useOverlay()
   const { confirm } = useDialog()
+  const { show: showSnackbar } = useSnackbar()
 
   const { data: posts, refetch: refetchPosts } = all("posts")
   const { data: authors, refetch: refetchAuthors } = all("authors")
@@ -32,6 +33,8 @@
   const onCreate = async () => {
     const createdPost = await editPostDialog.open()
 
+    showSnackbar({ message: "Post created successfully", type: "success" })
+
     if (createdPost) {
       await refetchPosts()
       await refetchAuthors() // Refetch authors since user might have added a new author
@@ -41,6 +44,8 @@
   const onDelete = async (id: number) => {
     confirm({ title: "Are you sure you want to delete this post?", size: "md", color: "error" })
       .onConfirm(async () => {
+        showSnackbar({ message: "Post deleted successfully", type: "info" })
+
         await remove("posts", id)
         await refetchPosts()
       })
@@ -49,6 +54,8 @@
 
   const onEdit = async (id: number) => {
     const editedPost = await editPostDialog.open({ id })
+
+    showSnackbar({ message: "Post updated successfully", type: "success" })
 
     if (editedPost) {
       await refetchPosts()

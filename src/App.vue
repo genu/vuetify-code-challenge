@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import DialogProvider from "@/components/DialogProvider.vue"
+  import SnackbarProvider from "./components/SnackbarProvider.vue"
 </script>
 
 <template>
@@ -20,5 +21,6 @@
       </v-container>
     </v-main>
     <DialogProvider />
+    <SnackbarProvider />
   </v-app>
 </template>

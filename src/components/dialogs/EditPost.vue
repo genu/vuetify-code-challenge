@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { useData } from "@/composables"
-  import { useOverlay } from "@/composables/ui"
-  import { computed, ref, watchEffect } from "vue"
+  import { useOverlay, useSnackbar } from "@/composables/ui"
+  import { computed, ref } from "vue"
   import { VDateInput } from "vuetify/labs/VDateInput"
   import EditAuthorDialog from "@/components/dialogs/EditAuthor.vue"
   import type { EditPostForm } from "@/types/form"
@@ -10,6 +10,7 @@
   const emits = defineEmits<{ close: [boolean?] }>()
   const { all, create, one, update } = useData()
   const { create: createOverlay } = useOverlay()
+  const { show: showSnackbar } = useSnackbar()
 
   const editAuthorDialog = createOverlay(EditAuthorDialog)
 
@@ -56,6 +57,8 @@
 
   const onAddAuthor = async () => {
     const createdAuthor = await editAuthorDialog.open()
+
+    showSnackbar({ message: "Author created successfully", type: "success" })
 
     if (createdAuthor) await refetchAuthors()
   }
