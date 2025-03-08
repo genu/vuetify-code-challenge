@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+  import { useDate } from "vuetify"
   import { useData } from "@/composables"
-  import { useDialog, useOverlay, useSnackbar } from "@/composables/ui"
+  import { useDialog, useOverlay, useSnackbar, useStringUtils } from "@/composables/ui"
   import EditPostDialog from "@/components/dialogs/EditPost.vue"
   import { computed } from "vue"
 
@@ -8,6 +9,8 @@
   const { create: createOverlay } = useOverlay()
   const { confirm } = useDialog()
   const { show: showSnackbar } = useSnackbar()
+  const { getInitials } = useStringUtils()
+  const date = useDate()
 
   const { data: posts, refetch: refetchPosts } = all("posts")
   const { data: authors, refetch: refetchAuthors } = all("authors")
@@ -74,26 +77,28 @@
       <v-divider />
 
       <v-container class="px-0 py-5" fluid v-for="post in postsWithAuthors" :key="post.id">
-        <p class="font-weight-medium text-primary">{{ post.author }}</p>
+        <p class="font-weight-medium text-primary">{{ date.format(post.postedAt, "fullDateWithWeekday") }}</p>
         <div class="d-flex justify-space-between align-center">
           <p class="mt-2 text-h5 font-weight-bold text-sm-h4">{{ post.title }}</p>
           <div class="d-flex ga-2 px-2">
             <v-btn
-              @click="onEdit(post.id!)"
-              v-tooltip="{ text: 'Edit', location: 'top' }"
-              size="x-small"
-              icon="mdi-pencil"
-              variant="flat" />
-            <v-btn
               @click="onDelete(post.id!)"
-              v-tooltip="{ text: 'Delete', location: 'top' }"
-              size="x-small"
-              icon="mdi-trash-can"
+              size="small"
+              prepend-icon="mdi-trash-can"
               color="red"
+              text="Delete"
               variant="text" />
+            <v-btn @click="onEdit(post.id!)" size="small" prepend-icon="mdi-pencil" text="Edit" variant="flat" />
           </div>
         </div>
-        <p class="mt-4 mb-6 text-body-1">{{ post.content }}</p>
+        <p class="mt-4 mb-0 text-body-1">{{ post.content }}</p>
+        <v-list-item class="px-0 my-2" v-if="post.authorId !== -1">
+          <template #prepend>
+            <v-avatar color="primary" :text="getInitials(post.author)" />
+          </template>
+          <v-list-item-title>{{ post.author }}</v-list-item-title>
+          <v-list-item-subtitle>Author</v-list-item-subtitle>
+        </v-list-item>
       </v-container>
     </template>
     <v-empty-state
