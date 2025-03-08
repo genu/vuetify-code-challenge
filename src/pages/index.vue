@@ -59,33 +59,46 @@
 
 <template>
   <v-container fluid>
-    <div class="d-flex justify-space-between py-3">
-      <h6 class="text-h6">Latest Posts</h6>
-      <v-btn @click="onCreate" prepend-icon="mdi-plus" variant="text" text="New Post" />
-    </div>
-    <v-divider />
-
-    <v-container class="px-0 py-5" fluid v-for="post in postsWithAuthors" :key="post.id">
-      <p class="font-weight-medium text-primary">{{ post.author }}</p>
-      <div class="d-flex justify-space-between align-center">
-        <p class="mt-2 text-h5 font-weight-bold text-sm-h4">{{ post.title }}</p>
-        <div class="d-flex ga-2 px-2">
-          <v-btn
-            @click="onEdit(post.id!)"
-            v-tooltip="{ text: 'Edit', location: 'top' }"
-            size="x-small"
-            icon="mdi-pencil"
-            variant="flat" />
-          <v-btn
-            @click="onDelete(post.id!)"
-            v-tooltip="{ text: 'Delete', location: 'top' }"
-            size="x-small"
-            icon="mdi-trash-can"
-            color="red"
-            variant="text" />
-        </div>
+    <template v-if="postsWithAuthors.length">
+      <div class="d-flex justify-space-between py-3">
+        <h6 class="text-h6">Latest Posts</h6>
+        <v-btn @click="onCreate" prepend-icon="mdi-plus" variant="text" text="New Post" />
       </div>
-      <p class="mt-4 mb-6 text-body-1">{{ post.content }}</p>
-    </v-container>
+      <v-divider />
+
+      <v-container class="px-0 py-5" fluid v-for="post in postsWithAuthors" :key="post.id">
+        <p class="font-weight-medium text-primary">{{ post.author }}</p>
+        <div class="d-flex justify-space-between align-center">
+          <p class="mt-2 text-h5 font-weight-bold text-sm-h4">{{ post.title }}</p>
+          <div class="d-flex ga-2 px-2">
+            <v-btn
+              @click="onEdit(post.id!)"
+              v-tooltip="{ text: 'Edit', location: 'top' }"
+              size="x-small"
+              icon="mdi-pencil"
+              variant="flat" />
+            <v-btn
+              @click="onDelete(post.id!)"
+              v-tooltip="{ text: 'Delete', location: 'top' }"
+              size="x-small"
+              icon="mdi-trash-can"
+              color="red"
+              variant="text" />
+          </div>
+        </div>
+        <p class="mt-4 mb-6 text-body-1">{{ post.content }}</p>
+      </v-container>
+    </template>
+    <v-empty-state
+      color="primary"
+      v-else
+      title="No Blog posts"
+      text="Get started by creating a new post"
+      @click:action="onCreate"
+      action-text="Create Post">
+      <template #media>
+        <v-icon size="large" icon="mdi-card-plus" />
+      </template>
+    </v-empty-state>
   </v-container>
 </template>
