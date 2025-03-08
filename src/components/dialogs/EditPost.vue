@@ -58,9 +58,10 @@
   const onAddAuthor = async () => {
     const createdAuthor = await editAuthorDialog.open()
 
-    showSnackbar({ message: "Author created successfully", type: "success" })
-
-    if (createdAuthor) await refetchAuthors()
+    if (createdAuthor) {
+      showSnackbar({ message: "Author created successfully", type: "success" })
+      await refetchAuthors()
+    }
   }
 
   const onDismiss = () => {
