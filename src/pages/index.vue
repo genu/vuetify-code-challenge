@@ -98,7 +98,10 @@
                 </div>
               </div>
             </v-card-title>
-            <v-card-text class="pa-0 my-1 text-medium-emphasis"> {{ post.content }} </v-card-text>
+            <v-card-text class="pa-0 my-1 text-medium-emphasis">
+              {{ stringUtils.truncate(post.content, 150) }}
+            </v-card-text>
+
             <v-card-actions class="d-flex justify-end justify-space-between">
               <div>
                 <v-list-item class="px-0 my-2" v-if="post.authorId !== -1">
@@ -109,7 +112,11 @@
                   <v-list-item-subtitle>Author</v-list-item-subtitle>
                 </v-list-item>
               </div>
-              <v-btn :to="{ name: 'detail', params: { id: post.id } }" text="Read more" append-icon="mdi-arrow-right" />
+              <v-btn
+                v-if="stringUtils.wordCount(post.content) > 150"
+                :to="{ name: 'detail', params: { id: post.id } }"
+                text="Read more"
+                append-icon="mdi-arrow-right" />
             </v-card-actions>
           </v-card-item>
         </v-card>

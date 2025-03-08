@@ -27,5 +27,28 @@ export const useStringUtils = () => {
     return (firstInitial + lastInitial).toUpperCase()
   }
 
-  return { getInitials }
+  /**
+   * Truncate a string to a maximum length
+   *
+   * @param {string} text - The text to truncate
+   * @param {number} maxWords - The maximum length
+   * @returns {string} The truncated text
+   *
+   */
+  const truncate = (text?: string, maxWords?: number) => {
+    if (!text) return ""
+    if (!maxWords) return text
+
+    const words = text.split(" ")
+    const needsTruncation = words.length > maxWords
+
+    return words.slice(0, maxWords).join(" ") + (needsTruncation ? "..." : "")
+  }
+
+  const wordCount = (text?: string) => {
+    if (!text) return 0
+    return text.split(" ").length
+  }
+
+  return { getInitials, truncate, wordCount }
 }
