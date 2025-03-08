@@ -6,7 +6,7 @@
   const { id } = defineProps<{ id?: number }>()
   const emits = defineEmits<{ close: [boolean?] }>()
 
-  const { create } = useData()
+  const data = useData()
 
   const form = ref<EditAuthorForm>({
     firstName: "",
@@ -15,8 +15,8 @@
 
   const isNew = computed(() => id === undefined)
 
-  const onSave = async (data: EditAuthorForm) => {
-    await create("authors", { ...data })
+  const onSave = async (form: EditAuthorForm) => {
+    await data.create("authors", { ...form })
     emits("close", true)
   }
 </script>

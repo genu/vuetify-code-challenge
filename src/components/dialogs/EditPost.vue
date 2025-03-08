@@ -8,14 +8,14 @@
 
   const { id } = defineProps<{ id?: number }>()
   const emits = defineEmits<{ close: [boolean?] }>()
-  const { all, create, one, update } = useData()
-  const { create: createOverlay } = useOverlay()
-  const { show: showSnackbar } = useSnackbar()
+  const data = useData()
+  const overlay = useOverlay()
+  const snackbar = useSnackbar()
 
-  const editAuthorDialog = createOverlay(EditAuthorDialog)
+  const editAuthorDialog = overlay.create(EditAuthorDialog)
 
-  const { data: authors, refetch: refetchAuthors } = all("authors")
-  const { setPaused, refetch } = one("posts", id, { paused: true })
+  const { data: authors, refetch: refetchAuthors } = data.all("authors")
+  const { setPaused, refetch } = data.one("posts", id, { paused: true })
 
   // Default data
   const form = ref<EditPostForm>({
@@ -59,7 +59,7 @@
     const createdAuthor = await editAuthorDialog.open()
 
     if (createdAuthor) {
-      showSnackbar({ message: "Author created successfully", type: "success" })
+      snackbar.show({ message: "Author created successfully", type: "success" })
       await refetchAuthors()
     }
   }
@@ -68,11 +68,11 @@
     emits("close")
   }
 
-  const onSave = async (data: EditPostForm) => {
+  const onSave = async (form: EditPostForm) => {
     if (isNew.value) {
-      await create("posts", { ...data })
+      await data.create("posts", { ...form })
     } else {
-      await update("posts", { ...data, id })
+      await data.update("posts", { ...form, id })
     }
 
     emits("close", true)

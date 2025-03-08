@@ -5,17 +5,17 @@
   import EditPostDialog from "@/components/dialogs/EditPost.vue"
   import { computed } from "vue"
 
-  const { all, remove } = useData()
-  const { create: createOverlay } = useOverlay()
-  const { confirm } = useDialog()
-  const { show: showSnackbar } = useSnackbar()
-  const { getInitials } = useStringUtils()
+  const data = useData()
+  const overlay = useOverlay()
+  const dialog = useDialog()
+  const snackbar = useSnackbar()
+  const stringUtils = useStringUtils()
   const date = useDate()
 
-  const { data: posts, refetch: refetchPosts } = all("posts")
-  const { data: authors, refetch: refetchAuthors } = all("authors")
+  const { data: posts, refetch: refetchPosts } = data.all("posts")
+  const { data: authors, refetch: refetchAuthors } = data.all("authors")
 
-  const editPostDialog = createOverlay(EditPostDialog)
+  const editPostDialog = overlay.create(EditPostDialog)
 
   /**
    * Combine posts with authors usnig 'authorId'. If author is not found, display 'No Author'
@@ -36,7 +36,7 @@
   const onCreate = async () => {
     const createdPost = await editPostDialog.open()
 
-    showSnackbar({ message: "Post created successfully", type: "success" })
+    snackbar.show({ message: "Post created successfully", type: "success" })
 
     if (createdPost) {
       await refetchPosts()
@@ -45,11 +45,12 @@
   }
 
   const onDelete = async (id: number) => {
-    confirm({ title: "Are you sure you want to delete this post?", size: "md", color: "error" })
+    dialog
+      .confirm({ title: "Are you sure you want to delete this post?", size: "md", color: "error" })
       .onConfirm(async () => {
-        showSnackbar({ message: "Post deleted successfully", type: "info" })
+        snackbar.show({ message: "Post deleted successfully", type: "info" })
 
-        await remove("posts", id)
+        await data.remove("posts", id)
         await refetchPosts()
       })
       .open()
@@ -58,7 +59,7 @@
   const onEdit = async (id: number) => {
     const editedPost = await editPostDialog.open({ id })
 
-    showSnackbar({ message: "Post updated successfully", type: "success" })
+    snackbar.show({ message: "Post updated successfully", type: "success" })
 
     if (editedPost) {
       await refetchPosts()
@@ -94,7 +95,7 @@
         <p class="mt-4 mb-0 text-body-1">{{ post.content }}</p>
         <v-list-item class="px-0 my-2" v-if="post.authorId !== -1">
           <template #prepend>
-            <v-avatar color="primary" :text="getInitials(post.author)" />
+            <v-avatar color="primary" :text="stringUtils.getInitials(post.author)" />
           </template>
           <v-list-item-title>{{ post.author }}</v-list-item-title>
           <v-list-item-subtitle>Author</v-list-item-subtitle>
