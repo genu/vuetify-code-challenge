@@ -36,9 +36,9 @@
   const onCreate = async () => {
     const createdPost = await editPostDialog.open()
 
-    snackbar.show({ message: "Post created successfully", type: "success" })
-
     if (createdPost) {
+      snackbar.show({ message: "Post created successfully", type: "success" })
+
       await refetchPosts()
       await refetchAuthors() // Refetch authors since user might have added a new author
     }
@@ -59,9 +59,9 @@
   const onEdit = async (id: number) => {
     const editedPost = await editPostDialog.open({ id })
 
-    snackbar.show({ message: "Post updated successfully", type: "success" })
-
     if (editedPost) {
+      snackbar.show({ message: "Post updated successfully", type: "success" })
+
       await refetchPosts()
       await refetchAuthors() // Refetch authors since user might have added a new author
     }
@@ -78,28 +78,41 @@
       <v-divider />
 
       <v-container class="px-0 py-5" fluid v-for="post in postsWithAuthors" :key="post.id">
-        <p class="font-weight-medium text-primary">{{ date.format(post.postedAt, "fullDateWithWeekday") }}</p>
-        <div class="d-flex justify-space-between align-center">
-          <p class="mt-2 text-h5 font-weight-bold text-sm-h4">{{ post.title }}</p>
-          <div class="d-flex ga-2 px-2">
-            <v-btn
-              @click="onDelete(post.id!)"
-              size="small"
-              prepend-icon="mdi-trash-can"
-              color="red"
-              text="Delete"
-              variant="text" />
-            <v-btn @click="onEdit(post.id!)" size="small" prepend-icon="mdi-pencil" text="Edit" variant="flat" />
-          </div>
-        </div>
-        <p class="mt-4 mb-0 text-body-1">{{ post.content }}</p>
-        <v-list-item class="px-0 my-2" v-if="post.authorId !== -1">
-          <template #prepend>
-            <v-avatar color="primary" :text="stringUtils.getInitials(post.author)" />
-          </template>
-          <v-list-item-title>{{ post.author }}</v-list-item-title>
-          <v-list-item-subtitle>Author</v-list-item-subtitle>
-        </v-list-item>
+        <v-card class="rounded-lg">
+          <v-card-item>
+            <p class="font-weight-medium text-primary text-body-2">
+              {{ date.format(post.postedAt, "fullDateWithWeekday") }}
+            </p>
+            <v-card-title>
+              <div class="d-flex justify-space-between align-center">
+                <span>{{ post.title }} </span>
+                <div class="d-flex ga-2 px-2">
+                  <v-btn
+                    @click="onDelete(post.id!)"
+                    size="small"
+                    prepend-icon="mdi-trash-can"
+                    color="red"
+                    text="Delete"
+                    variant="text" />
+                  <v-btn @click="onEdit(post.id!)" size="small" prepend-icon="mdi-pencil" text="Edit" variant="flat" />
+                </div>
+              </div>
+            </v-card-title>
+            <v-card-text class="pa-0 my-1 text-medium-emphasis"> {{ post.content }} </v-card-text>
+            <v-card-actions class="d-flex justify-end justify-space-between">
+              <div>
+                <v-list-item class="px-0 my-2" v-if="post.authorId !== -1">
+                  <template #prepend>
+                    <v-avatar color="primary" :text="stringUtils.getInitials(post.author)" />
+                  </template>
+                  <v-list-item-title>{{ post.author }}</v-list-item-title>
+                  <v-list-item-subtitle>Author</v-list-item-subtitle>
+                </v-list-item>
+              </div>
+              <v-btn :to="{ name: 'detail', params: { id: post.id } }" text="Read more" append-icon="mdi-arrow-right" />
+            </v-card-actions>
+          </v-card-item>
+        </v-card>
       </v-container>
     </template>
     <v-empty-state
