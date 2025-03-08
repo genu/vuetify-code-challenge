@@ -1,3 +1,7 @@
+/**
+ * This composable is an adaptation of my previous work on this PR: https://github.com/nuxt/ui/pull/3279
+ */
+
 import type { Component } from "vue"
 import { reactive, markRaw, shallowReactive } from "vue"
 
