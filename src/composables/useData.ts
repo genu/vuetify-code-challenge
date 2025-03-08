@@ -46,15 +46,17 @@ export const useData = () => {
       isPaused.value = paused
     }
 
-    const fetchData = async () => {
-      if (!id || isPaused.value) return
+    const fetchData = async (_id?: Schema[T]["key"]) => {
+      const resolvedId = _id || id
+
+      if (!resolvedId || isPaused.value) return
 
       isLoading.value = true
       error.value = null
 
       try {
         const db = await $db
-        data.value = await db.get(key, id)
+        data.value = await db.get(key, resolvedId)
 
         return data.value
       } catch (e) {
