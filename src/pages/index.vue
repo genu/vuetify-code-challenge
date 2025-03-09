@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { useDate } from "vuetify"
-  import { useData } from "@/composables"
+  import { useBreadcrumbs, useData } from "@/composables"
   import { useDialog, useOverlay, useSnackbar, useStringUtils } from "@/composables/ui"
   import EditPostDialog from "@/components/dialogs/EditPost.vue"
   import { computed } from "vue"
@@ -10,8 +10,10 @@
   const dialog = useDialog()
   const snackbar = useSnackbar()
   const stringUtils = useStringUtils()
+  const breadcrumbs = useBreadcrumbs()
   const date = useDate()
 
+  breadcrumbs.value = [{ title: "Blog Home", href: "/", disabled: false }]
   const { data: posts, refetch: refetchPosts } = data.all("posts")
   const { data: authors, refetch: refetchAuthors } = data.all("authors")
 
@@ -73,7 +75,7 @@
     <template v-if="postsWithAuthors.length">
       <div class="d-flex justify-space-between py-3">
         <h6 class="text-h6">Latest Posts</h6>
-        <v-btn @click="onCreate" prepend-icon="mdi-plus" variant="text" text="New Post" />
+        <v-btn color="primary" @click="onCreate" prepend-icon="mdi-plus" variant="tonal" text="New Post" />
       </div>
       <v-divider />
 

@@ -26,7 +26,7 @@
     <v-card>
       <v-card-item>
         <v-card-title>{{ isNew ? "Create" : "Edit" }} Author</v-card-title>
-        <v-card-subtitle>Sub Title</v-card-subtitle>
+        <v-card-subtitle>Enter author information</v-card-subtitle>
         <v-form class="d-flex ga-4 flex-column">
           <v-text-field v-model="form.firstName" label="First Name" />
           <v-text-field v-model="form.lastName" label="Last Name" />

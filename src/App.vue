@@ -1,18 +1,19 @@
 <script setup lang="ts">
-  import DialogProvider from "@/components/DialogProvider.vue"
-  import SnackbarProvider from "./components/SnackbarProvider.vue"
+  import { useBreadcrumbs } from "./composables"
+
+  const breadcrumbs = useBreadcrumbs()
 </script>
 
 <template>
   <v-app>
     <v-app-bar flat>
       <v-container class="d-flex">
-        <v-btn text="Home" to="/" />
+        <v-btn prepend-icon="$vuetify" text="Vlogify" to="/" />
       </v-container>
     </v-app-bar>
     <v-app-bar class="bg-grey-lighten-5" flat>
       <v-container>
-        <v-breadcrumbs :rounded="true" :items="['Home', 'Blog']" />
+        <v-breadcrumbs :items="breadcrumbs" />
       </v-container>
     </v-app-bar>
     <v-main class="bg-grey-lighten-3">

@@ -85,7 +85,7 @@
       <v-card>
         <v-card-item>
           <v-card-title>{{ isNew ? "Create" : "Edit" }} Post</v-card-title>
-          <v-card-subtitle>Sub Title</v-card-subtitle>
+          <v-card-subtitle>Enter post details</v-card-subtitle>
           <div class="d-flex ga-4">
             <div class="flex-1-1">
               <v-text-field v-model="form.title" label="Title" />

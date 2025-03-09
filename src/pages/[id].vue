@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-  import { useRoute } from "vue-router"
-
+  import { useRoute, useRouter } from "vue-router"
   import { useStringUtils } from "@/composables/ui"
-  import { useData } from "@/composables"
+  import { useBreadcrumbs, useData } from "@/composables"
   import { computed, watchEffect } from "vue"
 
   const data = useData()
   const route = useRoute()
+  const breadcrumbs = useBreadcrumbs()
+
   const stringUtils = useStringUtils()
 
   const postId = route.params.id
@@ -16,6 +17,10 @@
 
   watchEffect(() => {
     if (post.value && post.value.authorId !== -1) {
+      breadcrumbs.value = [
+        { title: "Blog Home", href: "/", disabled: false },
+        { title: post.value.title || "", disabled: true },
+      ]
       refetchAuthor(post.value.authorId)
     }
   })
