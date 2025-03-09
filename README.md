@@ -28,7 +28,7 @@ A blog application built with Vue and Vuetify as part of the Vuetify Developer C
 1. Clone the repository:
    ```bash
    git clone https://github.com/genu/vuetify-code-challenge
-   cd vuetify-blog-challenge
+   cd vuetify-code-challenge
    bun install
    ```
 
