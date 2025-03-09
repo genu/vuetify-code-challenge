@@ -5,7 +5,7 @@ A blog application built with Vue and Vuetify as part of the Vuetify Developer C
 > [!IMPORTANT]
 > This is a local-only design that uses IndexedDB (via IDB) for data persistence, eliminating the need for a backend server while still maintaining state through page refreshes.
 
-> [!INFO]
+> [!NOTE]
 > Some of the dialog logic is inspired by my previous work on the Nuxt UI library here: [github.com/nuxt/ui/pull/3279](https://github.com/nuxt/ui/pull/3279)
 
 ## 🚀 Features
