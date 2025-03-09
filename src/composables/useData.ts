@@ -36,6 +36,14 @@ export const useData = () => {
     return { data, isLoading, error, refetch: fetchData }
   }
 
+  /**
+   * Fetch a single record from the store
+   *
+   * @param key The key of the store (e.g. table name)
+   * @param id The ID of the record to fetch
+   * @param options Options for the query
+   * @param options.paused Whether to pause the query
+   */
   const one = <T extends DBKey>(key: T, id?: Schema[T]["key"], options?: QueryOptions) => {
     const data = ref<Schema[T]["value"] | undefined>()
     const isLoading = ref(false)
@@ -71,18 +79,38 @@ export const useData = () => {
     return { data, isLoading, error, setPaused, refetch: fetchData }
   }
 
+  /**
+   * Remove a record from the store
+   *
+   * @param key The key of the store (e.g. table name)
+   * @param id The ID of the record to remove
+   * @returns A promise that resolves when the record is removed
+   */
   const remove = async <T extends DBKey>(key: T, id: Schema[T]["key"]) => {
     const db = await $db
 
     return await db.delete(key, id)
   }
 
+  /**
+   * Update a record in the store
+   * @param key The key of the store (e.g. table name)
+   * @param value The new value of the record
+   * @returns A promise that resolves when the record is updated
+   */
   const update = async <T extends DBKey>(key: T, value: Schema[T]["value"]) => {
     const db = await $db
 
     return await db.put(key, value)
   }
 
+  /**
+   * Create a new record in the store
+   *
+   * @param key The key of the store (e.g. table name)
+   * @param value The value of the record to create
+   * @returns A promise that resolves when the record is created
+   */
   const create = async <T extends DBKey>(key: T, value: Omit<Schema[T]["value"], "id">) => {
     const db = await $db
 
