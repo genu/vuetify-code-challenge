@@ -60,6 +60,12 @@
 
     if (createdAuthor) {
       snackbar.show({ message: "Author created successfully", type: "success" })
+
+      // Update the form with the new author
+      form.value = {
+        ...form.value,
+        authorId: Number(createdAuthor),
+      }
       await refetchAuthors()
     }
   }

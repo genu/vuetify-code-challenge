@@ -4,7 +4,7 @@
   import { computed, ref } from "vue"
 
   const { id } = defineProps<{ id?: number }>()
-  const emits = defineEmits<{ close: [boolean?] }>()
+  const emits = defineEmits<{ close: [number?] }>()
 
   const data = useData()
 
@@ -16,8 +16,9 @@
   const isNew = computed(() => id === undefined)
 
   const onSave = async (form: EditAuthorForm) => {
-    await data.create("authors", { ...form })
-    emits("close", true)
+    const newId = await data.create("authors", { ...form })
+
+    emits("close", newId)
   }
 </script>
 
