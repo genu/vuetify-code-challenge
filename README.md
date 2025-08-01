@@ -2,6 +2,9 @@
 
 A blog application built with Vue and Vuetify as part of the Vuetify Developer Code Challenge. This application provides a complete CRUD system for managing blog posts.
 
+> [!WARNING]
+> Still waiting for feedback from [Vuetify](https://github.com/vuetifyjs/vuetify) team and [John Lider](https://x.com/zeroskillz?lang=en)
+
 > [!IMPORTANT]
 > This is a local-only design that uses IndexedDB (via IDB) for data persistence, eliminating the need for a backend server while still maintaining state through page refreshes.
 
